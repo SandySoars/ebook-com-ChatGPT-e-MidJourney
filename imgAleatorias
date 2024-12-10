@@ -1,0 +1,28 @@
+import numpy as np
+import matplotlib.pyplot as plt
+import tensorflow as tf
+
+# Define o tamanho da imagem gerada
+image_size = (28, 28)  # Dimensão de 28x28 pixels
+
+# Criação do modelo gerador
+def create_generator():
+    model = tf.keras.Sequential([
+        tf.keras.layers.Dense(128, activation='relu', input_shape=(100,)),  # Entrada: vetor de ruído
+        tf.keras.layers.Dense(np.prod(image_size), activation='sigmoid'),  # Saída: vetor de pixels
+        tf.keras.layers.Reshape(image_size)  # Redimensiona para 28x28
+    ])
+    return model
+
+# Inicializa o gerador
+generator = create_generator()
+
+# Gera uma imagem a partir de ruído aleatório
+noise = np.random.normal(0, 1, (1, 100))  # Vetor de ruído com 100 números aleatórios
+generated_image = generator.predict(noise)
+
+# Mostra a imagem gerada
+plt.imshow(generated_image[0], cmap='gray')  # Exibe como escala de cinza
+plt.title("Imagem Gerada Aleatoriamente")
+plt.axis('off')
+plt.show()
